@@ -28,7 +28,7 @@ def main(path):
         push_most_retweeted(most_retweeted, tweet)
 
         date = tweet["date"]
-        tweet_count = users.get(date, [0])[0]
+        tweet_count = days.get(date, [0])[0]
         days[date] = (tweet_count + 1, date)
 
         username = tweet["user"]["username"]
