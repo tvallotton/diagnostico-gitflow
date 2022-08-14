@@ -36,7 +36,7 @@ def insert_hashtags(hashtags, tweet):
 
 def main(path):
     with open(path) as file:
-        data = [json.loads(data) for data in file.readlines()[:1000]]
+        data = [json.loads(data) for data in file.readlines()]
 
     most_retweeted = []
     users = {}
