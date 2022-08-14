@@ -44,7 +44,7 @@ def main(path):
     days = days[:10]
 
     with open("output.json", "w") as output: 
-        json.dumps({
+        json.dump({
             "top_ten_days": days, 
             "top_ten_users": users, 
             "most_retweeted": most_retweeted,
