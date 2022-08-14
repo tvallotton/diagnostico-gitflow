@@ -1,6 +1,10 @@
 import sys
 import json
+import re
 
+from attr import has
+
+HASHTAG = re.compile("#\w+")
 
 def push_most_retweeted(current_top, new):
     if len(current_top) < 10:
@@ -24,9 +28,15 @@ def insert_user(users, tweet):
     users[username] = (tweet_count + 1, tweet["user"])
 
 
+def insert_hashtags(hashtags, tweet): 
+    for hashtag in HASHTAG.findall(tweet["content"]):
+        count = hashtags.get(hashtag, 0)
+        hashtags[hashtag] = count + 1
+
+
 def main(path):
     with open(path) as file:
-        data = [json.loads(data) for data in file.readlines()]
+        data = [json.loads(data) for data in file.readlines()[:1000]]
 
     most_retweeted = []
     users = {}
@@ -36,7 +46,7 @@ def main(path):
         push_most_retweeted(most_retweeted, tweet)
         insert_user(users, tweet)
         insert_date(days, tweet)
-
+        insert_hashtags(hashtags, tweet)
 
     users = list(users.values())
     users.sort(key=lambda x: -x[0])
@@ -45,6 +55,10 @@ def main(path):
     days = list(days.values())
     days.sort(key=lambda x: -x[0])
     days = days[:10]
+
+    hashtags = list(hashtags.items())
+    hashtags.sort(key=lambda x: -x[1])
+    hashtags = hashtags[:10]
 
     with open("output.json", "w") as output: 
         json.dump({
